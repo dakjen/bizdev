@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Send, Sparkles, Lightbulb, HelpCircle, Target, History, X } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+// import { base44 } from '@/api/base44Client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -40,7 +40,7 @@ export default function IdeaChat({ conversationId, stepContext, onClearStepConte
     queryKey: ['ideaConversation', conversationId],
     queryFn: async () => {
       if (!conversationId || stepContext) return null;
-      const conversations = await base44.entities.IdeaConversation.filter({ id: conversationId });
+      // const conversations = await base44.entities.IdeaConversation.filter({ id: conversationId });
       return conversations[0] || null;
     },
     enabled: !!conversationId && !stepContext
@@ -67,10 +67,10 @@ export default function IdeaChat({ conversationId, stepContext, onClearStepConte
       };
 
       if (id) {
-        await base44.entities.IdeaConversation.update(id, data);
+        // await base44.entities.IdeaConversation.update(id, data);
         return id;
       } else {
-        const newConversation = await base44.entities.IdeaConversation.create(data);
+        // const newConversation = await base44.entities.IdeaConversation.create(data);
         return newConversation.id;
       }
     },
@@ -191,7 +191,7 @@ User's latest message: ${userMessage}
 Provide a SHORT, casual response (2-4 sentences max) that moves them forward. Ask just ONE question at a time. Keep it conversational and friendly.`;
       }
 
-      const response = await base44.integrations.Core.InvokeLLM({
+      // const response = await base44.integrations.Core.InvokeLLM({
         prompt: prompt,
         add_context_from_internet: false
       });

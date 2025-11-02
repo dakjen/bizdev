@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+// import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,7 @@ export default function Profile() {
   const { data: user, isLoading } = useQuery({
     queryKey: ['currentUser'],
     queryFn: async () => {
-      const userData = await base44.auth.me();
+      // const userData = await base44.auth.me();
       setFullName(userData.full_name || '');
       return userData;
     }
@@ -21,7 +21,7 @@ export default function Profile() {
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data) => {
-      await base44.auth.updateMe(data);
+      // await base44.auth.updateMe(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['currentUser']);
@@ -35,7 +35,7 @@ export default function Profile() {
   };
 
   const handleLogout = () => {
-    base44.auth.logout();
+    // base44.auth.logout();
   };
 
   if (isLoading) {

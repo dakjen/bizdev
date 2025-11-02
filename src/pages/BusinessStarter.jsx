@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+// import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -354,18 +353,18 @@ export default function BusinessStarter() {
     queryKey: ['currentJourney', journeyId],
     queryFn: async () => {
       if (journeyId) {
-        const journeys = await base44.entities.BusinessJourney.filter({ id: journeyId });
+        // const journeys = await base44.entities.BusinessJourney.filter({ id: journeyId });
         return journeys[0] || null;
       } else {
         // Get the most recent journey or create a default one
-        const allJourneys = await base44.entities.BusinessJourney.list('-created_date', 1);
+        // const allJourneys = await base44.entities.BusinessJourney.list('-created_date', 1);
         if (allJourneys.length > 0) {
           // Redirect to the most recent journey
           navigate(createPageUrl('BusinessStarter') + `?journey=${allJourneys[0].id}`, { replace: true });
           return allJourneys[0];
         } else {
           // Create a default journey
-          const newJourney = await base44.entities.BusinessJourney.create({
+          // const newJourney = await base44.entities.BusinessJourney.create({
             business_name: 'My First Business',
             description: 'Getting started with my business journey',
             is_active: true
@@ -381,7 +380,7 @@ export default function BusinessStarter() {
     queryKey: ['businessSteps', currentJourney?.id],
     queryFn: async () => {
       if (!currentJourney?.id) return [];
-      const steps = await base44.entities.BusinessStep.filter({ journey_id: currentJourney.id });
+      // const steps = await base44.entities.BusinessStep.filter({ journey_id: currentJourney.id });
       return steps;
     },
     enabled: !!currentJourney?.id
@@ -392,12 +391,12 @@ export default function BusinessStarter() {
       const existingStep = userSteps.find(s => s.step_id === stepId);
       
       if (existingStep) {
-        await base44.entities.BusinessStep.update(existingStep.id, {
+        // await base44.entities.BusinessStep.update(existingStep.id, {
           completed: !existingStep.completed,
           completed_date: !existingStep.completed ? new Date().toISOString() : null
         });
       } else {
-        await base44.entities.BusinessStep.create({
+        // await base44.entities.BusinessStep.create({
           journey_id: currentJourney.id,
           step_id: stepId,
           completed: true,
@@ -415,9 +414,9 @@ export default function BusinessStarter() {
       const existingStep = userSteps.find(s => s.step_id === stepId);
       
       if (existingStep) {
-        await base44.entities.BusinessStep.update(existingStep.id, { notes });
+        // await base44.entities.BusinessStep.update(existingStep.id, { notes });
       } else {
-        await base44.entities.BusinessStep.create({
+        // await base44.entities.BusinessStep.create({
           journey_id: currentJourney.id,
           step_id: stepId,
           notes,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+// import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,14 +20,14 @@ export default function MyJourneys() {
   const { data: journeys = [], isLoading } = useQuery({
     queryKey: ['businessJourneys'],
     queryFn: async () => {
-      const data = await base44.entities.BusinessJourney.list('-created_date');
+      // const data = await base44.entities.BusinessJourney.list('-created_date');
       return data;
     }
   });
 
   const createJourneyMutation = useMutation({
     mutationFn: async (data) => {
-      const journey = await base44.entities.BusinessJourney.create(data);
+      // const journey = await base44.entities.BusinessJourney.create(data);
       return journey;
     },
     onSuccess: (journey) => {
@@ -41,7 +41,7 @@ export default function MyJourneys() {
 
   const deleteJourneyMutation = useMutation({
     mutationFn: async (id) => {
-      await base44.entities.BusinessJourney.delete(id);
+      // await base44.entities.BusinessJourney.delete(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['businessJourneys']);
