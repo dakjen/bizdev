@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 // import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -365,10 +366,10 @@ export default function BusinessStarter() {
         } else {
           // Create a default journey
           // const newJourney = await base44.entities.BusinessJourney.create({
-            business_name: 'My First Business',
-            description: 'Getting started with my business journey',
-            is_active: true
-          });
+          //   business_name: 'My First Business',
+          //   description: 'Getting started with my business journey',
+          //   is_active: true
+          // });
           navigate(createPageUrl('BusinessStarter') + `?journey=${newJourney.id}`, { replace: true });
           return newJourney;
         }
@@ -392,16 +393,16 @@ export default function BusinessStarter() {
       
       if (existingStep) {
         // await base44.entities.BusinessStep.update(existingStep.id, {
-          completed: !existingStep.completed,
-          completed_date: !existingStep.completed ? new Date().toISOString() : null
-        });
+        //   completed: !existingStep.completed,
+        //   completed_date: !existingStep.completed ? new Date().toISOString() : null
+        // });
       } else {
         // await base44.entities.BusinessStep.create({
-          journey_id: currentJourney.id,
-          step_id: stepId,
-          completed: true,
-          completed_date: new Date().toISOString()
-        });
+        //   journey_id: currentJourney.id,
+        //   step_id: stepId,
+        //   completed: true,
+        //   completed_date: new Date().toISOString()
+        // });
       }
     },
     onSuccess: () => {
@@ -417,11 +418,11 @@ export default function BusinessStarter() {
         // await base44.entities.BusinessStep.update(existingStep.id, { notes });
       } else {
         // await base44.entities.BusinessStep.create({
-          journey_id: currentJourney.id,
-          step_id: stepId,
-          notes,
-          completed: false
-        });
+        //   journey_id: currentJourney.id,
+        //   step_id: stepId,
+        //   notes,
+        //   completed: false
+        // });
       }
     },
     onSuccess: () => {
