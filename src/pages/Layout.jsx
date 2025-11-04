@@ -22,8 +22,7 @@ export default function Layout({ children, currentPageName }) {
               className="flex items-center gap-2 text-xl font-bold text-[#510069] hover:text-[#510069]/80 transition-colors"
             >
               <Rocket className="w-6 h-6" />
-              LaunchPad
-            </Link>
+                              Where2Start: Journey            </Link>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
