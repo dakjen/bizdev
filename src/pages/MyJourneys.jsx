@@ -135,7 +135,7 @@ export default function MyJourneys() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Where is your business at?</label>
+                  <label className="text-sm font-medium mb-2 block">What stage are you in?</label>
                   <Select onValueChange={setBusinessStatus} value={businessStatus}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select your business status" />
