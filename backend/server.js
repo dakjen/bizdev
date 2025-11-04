@@ -1,4 +1,3 @@
-
 const express = require('express');
 const cors = require('cors');
 const Redis = require('ioredis');
@@ -14,10 +13,21 @@ app.use(cors());
 app.use(express.json());
 
 app.post('/api/chat', ClerkExpressRequireAuth(), async (req, res) => {
-  const { history } = req.body;
+  const { history, workflow } = req.body;
 
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash'});
+    let systemInstruction = 'You are a helpful assistant.';
+    if (workflow === 'growth') {
+      systemInstruction = 'You are an expert business coach. Your goal is to help the user with business growth and scaling, as well as problem-solving. Provide actionable advice and ask clarifying questions.';
+    } else {
+      systemInstruction = 'You are an expert business coach helping someone discover and develop their ideal business idea. Your approach is structured and discovery-focused.';
+    }
+
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-2.0-flash',
+      systemInstruction,
+    });
+
     const chat = model.startChat({ history });
     const result = await chat.sendMessage(' ');
     const response = await result.response;

@@ -7,12 +7,19 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
-export default function IdeaChat({ conversationId, stepContext, onClearStepContext, currentJourney }) {
+export default function IdeaChat({ conversationId, stepContext, onClearStepContext, currentJourney, workflow = 'idea' }) {
   const getInitialMessage = () => {
     if (stepContext) {
       return {
         role: 'assistant',
         content: `Great! Let's work through **${stepContext.title}** together. 🎯\n\nI'll guide you through this step and help you complete it successfully.\n\nTo start, tell me: Where are you with this step? Have you already started, or is this completely new to you?`
+      };
+    }
+
+    if (workflow === 'growth') {
+      return {
+        role: 'assistant',
+        content: `👋 Welcome! I'm here to help you with your business growth and problem-solving. Let's get started!`
       };
     }
 
@@ -146,7 +153,7 @@ export default function IdeaChat({ conversationId, stepContext, onClearStepConte
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ history }),
+        body: JSON.stringify({ history, workflow }),
       });
 
       if (!response.ok) {
@@ -190,10 +197,10 @@ export default function IdeaChat({ conversationId, stepContext, onClearStepConte
           <div>
             <CardTitle className="flex items-center gap-2 text-[#510069]">
               <Sparkles className="w-5 h-5" />
-              {stepContext ? `Help: ${stepContext.title}` : 'Business Idea Discovery'}
+              {stepContext ? `Help: ${stepContext.title}` : (workflow === 'growth' ? 'Business Growth' : 'Business Idea Discovery')}
             </CardTitle>
             <p className="text-sm text-gray-600">
-              {stepContext ? "Let's work through this step together" : "Let's discover the perfect business idea for you"}
+              {stepContext ? "Let's work through this step together" : (workflow === 'growth' ? 'Let\'s grow your business' : 'Let\'s discover the perfect business idea for you')}
             </p>
           </div>
           {stepContext && onClearStepContext && (
@@ -239,7 +246,7 @@ export default function IdeaChat({ conversationId, stepContext, onClearStepConte
           </div>
         )}
 
-        {messages.length === 1 && !stepContext && (
+        {messages.length === 1 && !stepContext && workflow === 'idea' && (
           <div className="space-y-2 mt-4">
             <p className="text-sm text-gray-600 font-medium">Quick select:</p>
             {starterQuestions.map((question, index) => (
