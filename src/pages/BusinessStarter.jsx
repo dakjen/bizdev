@@ -564,8 +564,7 @@ export default function BusinessStarter() {
           <>
             <div className="space-y-4">
               {filteredSteps.map((step) => {
-                const userData = getUserStepData(step..id);
-                return (
+                                  const userData = getUserStepData(step.id);                return (
                   <StepCard
                     key={step.id}
                     step={step}
