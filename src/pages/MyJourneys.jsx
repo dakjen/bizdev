@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,9 +10,21 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export default function MyJourneys() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [businessName, setBusinessName] = useState('');
   const [description, setDescription] = useState('');
   const [businessStatus, setBusinessStatus] = useState('');
@@ -71,14 +84,28 @@ export default function MyJourneys() {
 
   const handleCreateJourney = () => {
     if (businessName.trim()) {
-      createJourneyMutation.mutate({
-        business_name: businessName,
-        description: description,
-        business_status: businessStatus,
-        business_explanation: businessExplanation,
-        is_active: true
-      });
+      if (businessStatus === 'has_business' || businessStatus === 'established') {
+        setIsAlertOpen(true);
+      } else {
+        createJourneyMutation.mutate({
+          business_name: businessName,
+          description: description,
+          business_status: businessStatus,
+          business_explanation: businessExplanation,
+          is_active: true
+        });
+      }
     }
+  };
+
+  const handleConfirmCreateJourney = () => {
+    createJourneyMutation.mutate({
+      business_name: businessName,
+      description: description,
+      business_status: businessStatus,
+      business_explanation: businessExplanation,
+      is_active: true
+    });
   };
 
   const handleViewJourney = (journeyId) => {
@@ -169,6 +196,17 @@ export default function MyJourneys() {
               </div>
             </DialogContent>
           </Dialog>
+          <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>The business plan will cost $2.99 a month</AlertDialogTitle>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Back</AlertDialogCancel>
+                <AlertDialogAction onClick={handleConfirmCreateJourney}>Continue</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
 
         {journeys.length === 0 ? (
