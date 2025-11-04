@@ -1,3 +1,3 @@
-# Where2Start: Journey
+# BizDev App
 
 This is a Vite+React app.
