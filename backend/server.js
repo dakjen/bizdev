@@ -11,9 +11,9 @@ app.use(express.json());
 
 // Journeys
 app.post('/api/journeys', async (req, res) => {
-  const { business_name, description } = req.body;
+  const { business_name, description, business_status, business_explanation } = req.body;
   const id = uuidv4();
-  const journey = { id, business_name, description, is_active: true, created_date: new Date().toISOString() };
+  const journey = { id, business_name, description, business_status, business_explanation, is_active: true, created_date: new Date().toISOString() };
   await redis.hset('journeys', id, JSON.stringify(journey));
   res.status(201).json(journey);
 });
@@ -33,11 +33,11 @@ app.get('/api/journeys/:id', async (req, res) => {
 });
 
 app.put('/api/journeys/:id', async (req, res) => {
-  const { business_name, description, is_active } = req.body;
+  const { business_name, description, is_active, business_status, business_explanation } = req.body;
   const journeyString = await redis.hget('journeys', req.params.id);
   if (journeyString) {
     const journey = JSON.parse(journeyString);
-    const updatedJourney = { ...journey, business_name, description, is_active };
+    const updatedJourney = { ...journey, business_name, description, is_active, business_status, business_explanation };
     await redis.hset('journeys', req.params.id, JSON.stringify(updatedJourney));
     res.json(updatedJourney);
   } else {

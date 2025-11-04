@@ -7,12 +7,19 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
-export default function IdeaChat({ conversationId, stepContext, onClearStepContext }) {
+export default function IdeaChat({ conversationId, stepContext, onClearStepContext, currentJourney }) {
   const getInitialMessage = () => {
     if (stepContext) {
       return {
         role: 'assistant',
         content: `Great! Let's work through **${stepContext.title}** together. 🎯\n\nI'll guide you through this step and help you complete it successfully.\n\nTo start, tell me: Where are you with this step? Have you already started, or is this completely new to you?`
+      };
+    }
+
+    if (currentJourney && (currentJourney.business_status === 'has_business' || currentJourney.business_status === 'established') && currentJourney.business_explanation) {
+      return {
+        role: 'assistant',
+        content: `👋 Welcome! I see you have a business and you've explained it as: "${currentJourney.business_explanation}". That's a great starting point!\n\nHow can I help you with your business today?`
       };
     }
     

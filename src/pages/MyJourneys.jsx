@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,12 +7,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { Plus, Rocket, Trash2, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function MyJourneys() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [businessName, setBusinessName] = useState('');
   const [description, setDescription] = useState('');
+  const [businessStatus, setBusinessStatus] = useState('');
+  const [businessExplanation, setBusinessExplanation] = useState('');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -47,6 +49,8 @@ export default function MyJourneys() {
       setIsDialogOpen(false);
       setBusinessName('');
       setDescription('');
+      setBusinessStatus('');
+      setBusinessExplanation('');
       navigate(createPageUrl('BusinessStarter') + `?journey=${journey.id}`);
     }
   });
@@ -70,6 +74,8 @@ export default function MyJourneys() {
       createJourneyMutation.mutate({
         business_name: businessName,
         description: description,
+        business_status: businessStatus,
+        business_explanation: businessExplanation,
         is_active: true
       });
     }
@@ -108,6 +114,7 @@ export default function MyJourneys() {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Start a New Business Journey</DialogTitle>
+                <DialogDescription>This will create a new business journey for you to track.</DialogDescription>
               </DialogHeader>
               <div className="space-y-4 mt-4">
                 <div>
@@ -127,6 +134,31 @@ export default function MyJourneys() {
                     className="min-h-[100px]"
                   />
                 </div>
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Where is your business at?</label>
+                  <Select onValueChange={setBusinessStatus} value={businessStatus}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select your business status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="new">New</SelectItem>
+                      <SelectItem value="no_business">I don't have a business yet.</SelectItem>
+                      <SelectItem value="has_business">I have a business</SelectItem>
+                      <SelectItem value="established">I'm established</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                {(businessStatus === 'has_business' || businessStatus === 'established') && (
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Explain where your business is</label>
+                    <Textarea
+                      value={businessExplanation}
+                      onChange={(e) => setBusinessExplanation(e.target.value)}
+                      placeholder="e.g., I have a few paying customers..."
+                      className="min-h-[100px]"
+                    />
+                  </div>
+                )}
                 <Button
                   onClick={handleCreateJourney}
                   disabled={!businessName.trim() || createJourneyMutation.isLoading}

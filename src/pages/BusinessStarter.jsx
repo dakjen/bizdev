@@ -553,6 +553,7 @@ export default function BusinessStarter() {
             conversationId={conversationId} 
             stepContext={stepContext}
             onClearStepContext={handleClearStepContext}
+            currentJourney={currentJourney}
           />
         ) : (
           <>
