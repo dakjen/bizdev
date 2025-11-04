@@ -1,15 +1,14 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Menu, User, Rocket, Home } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
 export default function Layout({ children, currentPageName }) {
   return (
@@ -24,33 +23,16 @@ export default function Layout({ children, currentPageName }) {
               <Rocket className="w-6 h-6" />
                               Where2Start: Journey            </Link>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="w-5 h-5 text-gray-700" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem asChild>
-                  <Link 
-                    to={createPageUrl('MyJourneys')} 
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <Home className="w-4 h-4" />
-                    My Journeys
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link 
-                    to={createPageUrl('Profile')} 
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <User className="w-4 h-4" />
-                    Profile
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div className="flex items-center gap-4">
+              <SignedIn>
+                <UserButton afterSignOutUrl="/" />
+              </SignedIn>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <Button>Sign In</Button>
+                </SignInButton>
+              </SignedOut>
+            </div>
           </div>
         </div>
       </nav>
