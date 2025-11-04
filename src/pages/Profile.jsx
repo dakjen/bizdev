@@ -1,5 +1,5 @@
+
 import React, { useState } from 'react';
-// import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,21 +7,21 @@ import { Input } from '@/components/ui/input';
 import { User, Mail, LogOut } from 'lucide-react';
 
 export default function Profile() {
-  const [fullName, setFullName] = useState('');
+  const [fullName, setFullName] = useState('Dakota Jennifer');
   const queryClient = useQueryClient();
 
   const { data: user, isLoading } = useQuery({
     queryKey: ['currentUser'],
     queryFn: async () => {
-      // const userData = await base44.auth.me();
-      setFullName(userData.full_name || '');
-      return userData;
+      // This is mock data. Auth needs to be implemented.
+      return { full_name: 'Dakota Jennifer', email: 'dakota@example.com' };
     }
   });
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data) => {
-      // await base44.auth.updateMe(data);
+      // This is a mock mutation. Auth needs to be implemented.
+      console.log('Updating profile with:', data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['currentUser']);
@@ -35,7 +35,8 @@ export default function Profile() {
   };
 
   const handleLogout = () => {
-    // base44.auth.logout();
+    // This is a mock logout. Auth needs to be implemented.
+    console.log('Logging out...');
   };
 
   if (isLoading) {

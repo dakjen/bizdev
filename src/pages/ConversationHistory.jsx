@@ -1,5 +1,5 @@
+
 import React from 'react';
-// import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,14 +15,22 @@ export default function ConversationHistory() {
   const { data: conversations = [], isLoading } = useQuery({
     queryKey: ['ideaConversations'],
     queryFn: async () => {
-      // const convos = await base44.entities.IdeaConversation.list('-last_updated');
-      return convos;
+      const response = await fetch('/api/conversations');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
     }
   });
 
   const deleteConversationMutation = useMutation({
     mutationFn: async (id) => {
-      // await base44.entities.IdeaConversation.delete(id);
+      const response = await fetch(`/api/conversations/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['ideaConversations']);

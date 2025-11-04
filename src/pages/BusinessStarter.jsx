@@ -1,6 +1,4 @@
-
 import React, { useState, useEffect } from 'react';
-// import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -354,22 +352,36 @@ export default function BusinessStarter() {
     queryKey: ['currentJourney', journeyId],
     queryFn: async () => {
       if (journeyId) {
-        // const journeys = await base44.entities.BusinessJourney.filter({ id: journeyId });
-        return journeys[0] || null;
+        const response = await fetch(`/api/journeys/${journeyId}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
       } else {
-        // Get the most recent journey or create a default one
-        // const allJourneys = await base44.entities.BusinessJourney.list('-created_date', 1);
+        const response = await fetch('/api/journeys');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const allJourneys = await response.json();
         if (allJourneys.length > 0) {
-          // Redirect to the most recent journey
           navigate(createPageUrl('BusinessStarter') + `?journey=${allJourneys[0].id}`, { replace: true });
           return allJourneys[0];
         } else {
-          // Create a default journey
-          // const newJourney = await base44.entities.BusinessJourney.create({
-          //   business_name: 'My First Business',
-          //   description: 'Getting started with my business journey',
-          //   is_active: true
-          // });
+          const createResponse = await fetch('/api/journeys', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              business_name: 'My First Business',
+              description: 'Getting started with my business journey',
+              is_active: true
+            }),
+          });
+          if (!createResponse.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const newJourney = await createResponse.json();
           navigate(createPageUrl('BusinessStarter') + `?journey=${newJourney.id}`, { replace: true });
           return newJourney;
         }
@@ -381,8 +393,11 @@ export default function BusinessStarter() {
     queryKey: ['businessSteps', currentJourney?.id],
     queryFn: async () => {
       if (!currentJourney?.id) return [];
-      // const steps = await base44.entities.BusinessStep.filter({ journey_id: currentJourney.id });
-      return steps;
+      const response = await fetch(`/api/steps?journey_id=${currentJourney.id}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
     },
     enabled: !!currentJourney?.id
   });
@@ -390,19 +405,34 @@ export default function BusinessStarter() {
   const toggleCompleteMutation = useMutation({
     mutationFn: async (stepId) => {
       const existingStep = userSteps.find(s => s.step_id === stepId);
-      
       if (existingStep) {
-        // await base44.entities.BusinessStep.update(existingStep.id, {
-        //   completed: !existingStep.completed,
-        //   completed_date: !existingStep.completed ? new Date().toISOString() : null
-        // });
+        const response = await fetch(`/api/steps/${existingStep.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ completed: !existingStep.completed }),
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
       } else {
-        // await base44.entities.BusinessStep.create({
-        //   journey_id: currentJourney.id,
-        //   step_id: stepId,
-        //   completed: true,
-        //   completed_date: new Date().toISOString()
-        // });
+        const response = await fetch('/api/steps', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            journey_id: currentJourney.id,
+            step_id: stepId,
+            completed: true,
+          }),
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
       }
     },
     onSuccess: () => {
@@ -413,16 +443,35 @@ export default function BusinessStarter() {
   const saveNotesMutation = useMutation({
     mutationFn: async ({ stepId, notes }) => {
       const existingStep = userSteps.find(s => s.step_id === stepId);
-      
       if (existingStep) {
-        // await base44.entities.BusinessStep.update(existingStep.id, { notes });
+        const response = await fetch(`/api/steps/${existingStep.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ notes }),
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
       } else {
-        // await base44.entities.BusinessStep.create({
-        //   journey_id: currentJourney.id,
-        //   step_id: stepId,
-        //   notes,
-        //   completed: false
-        // });
+        const response = await fetch('/api/steps', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            journey_id: currentJourney.id,
+            step_id: stepId,
+            notes,
+            completed: false
+          }),
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
       }
     },
     onSuccess: () => {

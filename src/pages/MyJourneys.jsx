@@ -1,5 +1,5 @@
+
 import React, { useState } from 'react';
-// import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,15 +20,27 @@ export default function MyJourneys() {
   const { data: journeys = [], isLoading } = useQuery({
     queryKey: ['businessJourneys'],
     queryFn: async () => {
-      // const data = await base44.entities.BusinessJourney.list('-created_date');
-      return data;
+      const response = await fetch('/api/journeys');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
     }
   });
 
   const createJourneyMutation = useMutation({
     mutationFn: async (data) => {
-      // const journey = await base44.entities.BusinessJourney.create(data);
-      return journey;
+      const response = await fetch('/api/journeys', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
     },
     onSuccess: (journey) => {
       queryClient.invalidateQueries(['businessJourneys']);
@@ -41,7 +53,12 @@ export default function MyJourneys() {
 
   const deleteJourneyMutation = useMutation({
     mutationFn: async (id) => {
-      // await base44.entities.BusinessJourney.delete(id);
+      const response = await fetch(`/api/journeys/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['businessJourneys']);

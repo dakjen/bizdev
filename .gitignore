@@ -21,6 +21,9 @@ dist-ssr
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+*.sw?.env
+.env*
+!.env.example
 
-.env
+# Vercel
+.vercel
