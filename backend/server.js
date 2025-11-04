@@ -3,11 +3,31 @@ const cors = require('cors');
 const Redis = require('ioredis');
 const { v4: uuidv4 } = require('uuid');
 
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+
 const app = express();
 const redis = new Redis(process.env.REDIS_URL);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 app.use(cors());
 app.use(express.json());
+
+app.post('/api/chat', async (req, res) => {
+  const { history } = req.body;
+
+  try {
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash'});
+    const chat = model.startChat({ history });
+    const result = await chat.sendMessage(' ');
+    const response = await result.response;
+    const text = response.text();
+    res.json({ text });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error communicating with AI' });
+  }
+});
+
 
 // Journeys
 app.post('/api/journeys', async (req, res) => {

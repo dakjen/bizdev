@@ -135,11 +135,35 @@ export default function IdeaChat({ conversationId, stepContext, onClearStepConte
     setMessages(newMessages);
     setIsLoading(true);
 
-    // Placeholder for LLM response
-    setTimeout(() => {
-      setMessages(prev => [...prev, { role: 'assistant', content: "I'm still learning and can't respond right now." }]);
+    try {
+      const history = newMessages.map(msg => ({
+        role: msg.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: msg.content }],
+      }));
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ history }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setMessages(prev => [...prev, { role: 'assistant', content: data.text }]);
+    } catch (error) {
+      console.error('Error getting response:', error);
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: "I apologize, I'm having trouble connecting right now. Please try again in a moment." 
+      }]);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const handleKeyPress = (e) => {
