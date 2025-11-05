@@ -482,12 +482,12 @@ export default function ExistingBusiness({ currentJourney }) {
           Back to My Journeys
         </Button>
 
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Grow Your Business</h1>
-
         {currentJourney && (
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">{currentJourney.business_name}</h2>
-            
+            <h2 className="text-2xl font-bold text-gray-900">Grow Your Business</h2>
+            {currentJourney.description && (
+              <p className="text-gray-600 mt-1">{currentJourney.description}</p>
+            )}
           </div>
         )}
 
