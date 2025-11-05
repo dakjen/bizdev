@@ -495,7 +495,7 @@ export default function ExistingBusiness() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#510069]/5 via-white to-[#9ab292]/10">
+    <div className="min-h-screen bg-gradient-to-br from-[#510069]/5 via-white to-[#9ab292]/10 border-4 border-red-500">
       <div className="max-w-5xl mx-auto p-4 md:p-8 py-8">
         <Button
           variant="ghost"
