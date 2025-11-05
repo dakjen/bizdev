@@ -487,9 +487,7 @@ export default function ExistingBusiness({ currentJourney }) {
         {currentJourney && (
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-900">{currentJourney.business_name}</h2>
-            {currentJourney.description && (
-              <p className="text-gray-600 mt-1">{currentJourney.description}</p>
-            )}
+            
           </div>
         )}
 
