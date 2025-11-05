@@ -527,12 +527,10 @@ export default function BusinessStarter() {
           Back to My Journeys
         </Button>
 
-        {currentJourney && (
-          <div className="mb-6">
-            <h2 className="text-3xl font-bold text-gray-900">Start Your New Business Journey</h2>
-            <p className="text-gray-600 mt-1">This is the starting point for your new business. We'll guide you through the steps to get your business off the ground.</p>
-          </div>
-        )}
+        <div className="mb-6">
+          <h2 className="text-3xl font-bold text-gray-900">Start Your New Business Journey</h2>
+          <p className="text-gray-600 mt-1">This is the starting point for your new business. We'll guide you through the steps to get your business off the ground.</p>
+        </div>
 
         <ProgressHeader 
           totalSteps={BUSINESS_STEPS.length} 

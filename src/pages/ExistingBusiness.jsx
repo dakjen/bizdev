@@ -506,10 +506,10 @@ export default function ExistingBusiness() {
           Back to My Journeys
         </Button>
 
-          <div className="mb-6">
-            <h2 className="text-3xl font-bold text-gray-900">Manage Your Existing Business</h2>
-            <p className="text-gray-600 mt-1">This is your dashboard for managing and growing your existing business.</p>
-          </div>
+        <div className="mb-6">
+          <h2 className="text-3xl font-bold text-gray-900">Manage Your Existing Business</h2>
+          <p className="text-gray-600 mt-1">This is your dashboard for managing and growing your existing business.</p>
+        </div>
 
         <ProgressHeader 
           totalSteps={BUSINESS_STEPS.length} 
