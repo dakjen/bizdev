@@ -330,7 +330,7 @@ const BUSINESS_STEPS = [
   }
 ];
 
-export default function ExistingBusiness({ currentJourney }) {
+export default function ExistingBusiness() {
   const [activeCategory, setActiveCategory] = useState('planning');
   const [stepContext, setStepContext] = useState(null);
   const queryClient = useQueryClient();
@@ -338,7 +338,21 @@ export default function ExistingBusiness({ currentJourney }) {
 
   // Get journey ID and conversation ID from URL
   const urlParams = new URLSearchParams(window.location.search);
+  const journeyId = urlParams.get('journey');
   const conversationId = urlParams.get('conversation');
+
+  const { data: currentJourney, isLoading: isLoadingJourney } = useQuery({
+    queryKey: ['currentJourney', journeyId],
+    queryFn: async () => {
+      if (!journeyId) return null;
+      const response = await fetch(`/api/journeys/${journeyId}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    },
+    enabled: !!journeyId
+  });
 
   // If viewing a conversation, switch to idea tab
   useEffect(() => {
@@ -459,7 +473,7 @@ export default function ExistingBusiness({ currentJourney }) {
     return userData?.completed;
   }).length;
 
-  if (isLoadingSteps) {
+  if (isLoadingJourney || isLoadingSteps) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#510069]/5 via-white to-[#9ab292]/10 flex items-center justify-center">
         <div className="text-center">

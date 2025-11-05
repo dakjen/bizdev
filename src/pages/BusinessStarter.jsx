@@ -8,7 +8,7 @@ import StepCard from '../components/business/StepCard';
 import IdeaChat from '../components/business/IdeaChat';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import ExistingBusiness from './ExistingBusiness';
+
 
 // Complete business starter steps data
 const BUSINESS_STEPS = [
@@ -513,9 +513,7 @@ export default function BusinessStarter() {
     );
   }
 
-  if (currentJourney && (currentJourney.business_status === 'has_business' || currentJourney.business_status === 'established')) {
-    return <ExistingBusiness currentJourney={currentJourney} />;
-  }
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#510069]/5 via-white to-[#9ab292]/10">

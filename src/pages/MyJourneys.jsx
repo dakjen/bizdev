@@ -108,8 +108,12 @@ export default function MyJourneys() {
     });
   };
 
-  const handleViewJourney = (journeyId) => {
-    navigate(createPageUrl('BusinessStarter') + `?journey=${journeyId}`);
+  const handleViewJourney = (journey) => {
+    if (journey.business_status === 'has_business' || journey.business_status === 'established') {
+      navigate(createPageUrl('ExistingBusiness') + `?journey=${journey.id}`);
+    } else {
+      navigate(createPageUrl('BusinessStarter') + `?journey=${journey.id}`);
+    }
   };
 
   if (isLoading) {
@@ -230,7 +234,7 @@ export default function MyJourneys() {
               <Card
                 key={journey.id}
                 className="hover:shadow-lg transition-shadow cursor-pointer group"
-                onClick={() => handleViewJourney(journey.id)}
+                onClick={() => handleViewJourney(journey)}
               >
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -263,7 +267,7 @@ export default function MyJourneys() {
                     className="w-full group-hover:bg-[#510069]/5 group-hover:border-[#510069]"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleViewJourney(journey.id);
+                      handleViewJourney(journey);
                     }}
                   >
                     Continue Journey
