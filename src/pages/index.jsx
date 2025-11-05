@@ -1,6 +1,7 @@
 import Layout from "./Layout.jsx";
 
 import BusinessStarter from "./BusinessStarter";
+import ExistingBusiness from "./ExistingBusiness";
 
 import ConversationHistory from "./ConversationHistory";
 
@@ -13,6 +14,7 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 const PAGES = {
     
     BusinessStarter: BusinessStarter,
+    ExistingBusiness: ExistingBusiness,
     
     ConversationHistory: ConversationHistory,
     
@@ -48,6 +50,7 @@ function PagesContent() {
                 
                 
                 <Route path="/BusinessStarter" element={<BusinessStarter />} />
+                <Route path="/ExistingBusiness" element={<ExistingBusiness />} />
                 
                 <Route path="/ConversationHistory" element={<ConversationHistory />} />
                 

@@ -484,6 +484,16 @@ export default function ExistingBusiness() {
     );
   }
 
+  if (!currentJourney) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#510069]/5 via-white to-[#9ab292]/10 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">Journey not found.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#510069]/5 via-white to-[#9ab292]/10">
       <div className="max-w-5xl mx-auto p-4 md:p-8 py-8">
@@ -496,14 +506,12 @@ export default function ExistingBusiness() {
           Back to My Journeys
         </Button>
 
-        {currentJourney && (
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-900">Grow Your Business</h2>
             {currentJourney.description && (
               <p className="text-gray-600 mt-1">{currentJourney.description}</p>
             )}
           </div>
-        )}
 
         <ProgressHeader 
           totalSteps={BUSINESS_STEPS.length} 
