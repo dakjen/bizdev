@@ -64,7 +64,11 @@ export default function MyJourneys() {
       setDescription('');
       setBusinessStatus('');
       setBusinessExplanation('');
-      navigate(createPageUrl('BusinessStarter') + `?journey=${journey.id}`);
+      if (journey.business_status === 'has_business' || journey.business_status === 'established') {
+        navigate(createPageUrl('ExistingBusiness') + `?journey=${journey.id}`);
+      } else {
+        navigate(createPageUrl('BusinessStarter') + `?journey=${journey.id}`);
+      }
     }
   });
 
